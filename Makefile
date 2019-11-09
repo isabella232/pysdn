@@ -1,11 +1,12 @@
 .PHONY: test docs build
 
 install:
-	-pip install -e .
+	pip install pytest sphinx wheel twine
+	cd pysdn && pip install -e .
 
 build:
 	-rm -f dist/*
-	python setup.py sdist bdist_wheel --universal
+	cd pysdn && python setup.py sdist bdist_wheel --universal
 	ls -la dist
 
 clean:
@@ -31,7 +32,8 @@ clean:
 	-find . \( -name "*__pycache__" -type d \) -prune -exec rm -rf {} +
 
 publish: clean
-	python setup.py sdist bdist_wheel --universal
+	cd pysdn && \
+	python setup.py sdist bdist_wheel --universal && \
 	twine upload dist/*
 
 docs:
